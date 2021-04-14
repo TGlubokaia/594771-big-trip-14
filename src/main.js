@@ -8,6 +8,11 @@ import {createTripsList} from './view/trips-list.js';
 import {createForm} from './view/form-create.js';
 import {createFormEdit} from './view/form-edit.js';
 import {createRouteItem} from './view/destination-item.js';
+import {createPoint} from './mock/point.js';
+
+const ITEMS_COUNT = 17;
+
+const items = new Array(ITEMS_COUNT).fill().map(createPoint);
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
@@ -32,8 +37,8 @@ render(siteListElement, createTripsList(), 'beforeend');
 
 const siteTripsList = siteMainElement.querySelector('.trip-events__list');
 render(siteTripsList, createForm(), 'afterbegin');
-render(siteTripsList, createFormEdit(), 'afterbegin');
+render(siteTripsList, createFormEdit(items[0]), 'afterbegin');
 
-for (let i = 0; i < 3; i++) {
-  render(siteTripsList, createRouteItem(), 'beforeend');
+for (let i = 1; i < ITEMS_COUNT; i++) {
+  render(siteTripsList, createRouteItem(items[i]), 'beforeend');
 }

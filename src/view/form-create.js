@@ -1,4 +1,5 @@
 export const createForm =  function () {
+
   return `<li class="trip-events__item">
   <form class="event event--edit" action="#" method="post">
     <header class="event__header">
@@ -44,7 +45,7 @@ export const createForm =  function () {
             </div>
 
             <div class="event__type-item">
-              <input id="event-type-flight-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="flight" checked>
+              <input id="event-type-flight-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="flight">
               <label class="event__type-label  event__type-label--flight" for="event-type-flight-1">Flight</label>
             </div>
 
@@ -98,6 +99,9 @@ export const createForm =  function () {
       <button class="event__reset-btn" type="reset">Cancel</button>
     </header>
     <section class="event__details">
+      <section class="event__section  event__section--offers">
+        <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+      </section>
     </section>
   </form>
 </li>`;
