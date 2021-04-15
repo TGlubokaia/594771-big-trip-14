@@ -1,3 +1,4 @@
+
 export const createFilters =  function () {
   return `<form class="trip-filters" action="#" method="get">
   <div class="trip-filters__filter">
