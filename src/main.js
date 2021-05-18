@@ -9,14 +9,12 @@ import {createForm} from './view/form-create.js';
 import {createFormEdit} from './view/form-edit.js';
 import {createRouteItem} from './view/destination-item.js';
 import {createPoint} from './mock/point.js';
+import {renderTemplate} from './utils.js';
 
 const ITEMS_COUNT = 17;
 
 const items = new Array(ITEMS_COUNT).fill().map(createPoint);
 
-const render = (container, template, place) => {
-  container.insertAdjacentHTML(place, template);
-};
 
 const siteMainElement = document.querySelector('.page-main');
 const siteHeaderElement = document.querySelector('.page-header');
@@ -25,20 +23,20 @@ const siteMenuElement = siteHeaderElement.querySelector('.trip-controls__navigat
 const siteFiltersElement = siteHeaderElement.querySelector('.trip-controls__filters');
 const siteListElement = siteMainElement.querySelector('.trip-events');
 
-render(siteHeaderTripMain, createHeaderInfo(), 'afterbegin');
+renderTemplate(siteHeaderTripMain, createHeaderInfo(), 'afterbegin');
 
 const siteHeaderTripInfo = siteHeaderElement.querySelector('.trip-info');
-render(siteHeaderTripInfo, createRoute(), 'afterbegin');
-render(siteHeaderTripInfo, createPrice(), 'beforeend');
-render(siteMenuElement, createMenu(), 'beforeend');
-render(siteFiltersElement, createFilters(), 'beforeend');
-render(siteListElement, createSort(), 'afterbegin');
-render(siteListElement, createTripsList(), 'beforeend');
+renderTemplate(siteHeaderTripInfo, createRoute(), 'afterbegin');
+renderTemplate(siteHeaderTripInfo, createPrice(), 'beforeend');
+renderTemplate(siteMenuElement, createMenu(), 'beforeend');
+renderTemplate(siteFiltersElement, createFilters(), 'beforeend');
+renderTemplate(siteListElement, createSort(), 'afterbegin');
+renderTemplate(siteListElement, createTripsList(), 'beforeend');
 
 const siteTripsList = siteMainElement.querySelector('.trip-events__list');
-render(siteTripsList, createForm(), 'afterbegin');
-render(siteTripsList, createFormEdit(items[0]), 'afterbegin');
+renderTemplate(siteTripsList, createForm(), 'afterbegin');
+renderTemplate(siteTripsList, createFormEdit(items[0]), 'afterbegin');
 
 for (let i = 1; i < ITEMS_COUNT; i++) {
-  render(siteTripsList, createRouteItem(items[i]), 'beforeend');
+  renderTemplate(siteTripsList, createRouteItem(items[i]), 'beforeend');
 }

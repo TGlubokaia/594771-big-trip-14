@@ -118,6 +118,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _view_form_edit_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./view/form-edit.js */ "./src/view/form-edit.js");
 /* harmony import */ var _view_destination_item_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./view/destination-item.js */ "./src/view/destination-item.js");
 /* harmony import */ var _mock_point_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./mock/point.js */ "./src/mock/point.js");
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./utils.js */ "./src/utils.js");
+
 
 
 
@@ -134,9 +136,6 @@ const ITEMS_COUNT = 17;
 
 const items = new Array(ITEMS_COUNT).fill().map(_mock_point_js__WEBPACK_IMPORTED_MODULE_10__["createPoint"]);
 
-const render = (container, template, place) => {
-  container.insertAdjacentHTML(place, template);
-};
 
 const siteMainElement = document.querySelector('.page-main');
 const siteHeaderElement = document.querySelector('.page-header');
@@ -145,22 +144,22 @@ const siteMenuElement = siteHeaderElement.querySelector('.trip-controls__navigat
 const siteFiltersElement = siteHeaderElement.querySelector('.trip-controls__filters');
 const siteListElement = siteMainElement.querySelector('.trip-events');
 
-render(siteHeaderTripMain, Object(_view_header_trip_info_js__WEBPACK_IMPORTED_MODULE_4__["createHeaderInfo"])(), 'afterbegin');
+Object(_utils_js__WEBPACK_IMPORTED_MODULE_11__["renderTemplate"])(siteHeaderTripMain, Object(_view_header_trip_info_js__WEBPACK_IMPORTED_MODULE_4__["createHeaderInfo"])(), 'afterbegin');
 
 const siteHeaderTripInfo = siteHeaderElement.querySelector('.trip-info');
-render(siteHeaderTripInfo, Object(_view_route_js__WEBPACK_IMPORTED_MODULE_3__["createRoute"])(), 'afterbegin');
-render(siteHeaderTripInfo, Object(_view_price_js__WEBPACK_IMPORTED_MODULE_5__["createPrice"])(), 'beforeend');
-render(siteMenuElement, Object(_view_menu_js__WEBPACK_IMPORTED_MODULE_0__["createMenu"])(), 'beforeend');
-render(siteFiltersElement, Object(_view_filter_js__WEBPACK_IMPORTED_MODULE_1__["createFilters"])(), 'beforeend');
-render(siteListElement, Object(_view_sort_js__WEBPACK_IMPORTED_MODULE_2__["createSort"])(), 'afterbegin');
-render(siteListElement, Object(_view_trips_list_js__WEBPACK_IMPORTED_MODULE_6__["createTripsList"])(), 'beforeend');
+Object(_utils_js__WEBPACK_IMPORTED_MODULE_11__["renderTemplate"])(siteHeaderTripInfo, Object(_view_route_js__WEBPACK_IMPORTED_MODULE_3__["createRoute"])(), 'afterbegin');
+Object(_utils_js__WEBPACK_IMPORTED_MODULE_11__["renderTemplate"])(siteHeaderTripInfo, Object(_view_price_js__WEBPACK_IMPORTED_MODULE_5__["createPrice"])(), 'beforeend');
+Object(_utils_js__WEBPACK_IMPORTED_MODULE_11__["renderTemplate"])(siteMenuElement, Object(_view_menu_js__WEBPACK_IMPORTED_MODULE_0__["createMenu"])(), 'beforeend');
+Object(_utils_js__WEBPACK_IMPORTED_MODULE_11__["renderTemplate"])(siteFiltersElement, Object(_view_filter_js__WEBPACK_IMPORTED_MODULE_1__["createFilters"])(), 'beforeend');
+Object(_utils_js__WEBPACK_IMPORTED_MODULE_11__["renderTemplate"])(siteListElement, Object(_view_sort_js__WEBPACK_IMPORTED_MODULE_2__["createSort"])(), 'afterbegin');
+Object(_utils_js__WEBPACK_IMPORTED_MODULE_11__["renderTemplate"])(siteListElement, Object(_view_trips_list_js__WEBPACK_IMPORTED_MODULE_6__["createTripsList"])(), 'beforeend');
 
 const siteTripsList = siteMainElement.querySelector('.trip-events__list');
-render(siteTripsList, Object(_view_form_create_js__WEBPACK_IMPORTED_MODULE_7__["createForm"])(), 'afterbegin');
-render(siteTripsList, Object(_view_form_edit_js__WEBPACK_IMPORTED_MODULE_8__["createFormEdit"])(items[0]), 'afterbegin');
+Object(_utils_js__WEBPACK_IMPORTED_MODULE_11__["renderTemplate"])(siteTripsList, Object(_view_form_create_js__WEBPACK_IMPORTED_MODULE_7__["createForm"])(), 'afterbegin');
+Object(_utils_js__WEBPACK_IMPORTED_MODULE_11__["renderTemplate"])(siteTripsList, Object(_view_form_edit_js__WEBPACK_IMPORTED_MODULE_8__["createFormEdit"])(items[0]), 'afterbegin');
 
 for (let i = 1; i < ITEMS_COUNT; i++) {
-  render(siteTripsList, Object(_view_destination_item_js__WEBPACK_IMPORTED_MODULE_9__["createRouteItem"])(items[i]), 'beforeend');
+  Object(_utils_js__WEBPACK_IMPORTED_MODULE_11__["renderTemplate"])(siteTripsList, Object(_view_destination_item_js__WEBPACK_IMPORTED_MODULE_9__["createRouteItem"])(items[i]), 'beforeend');
 }
 
 
@@ -284,17 +283,48 @@ const createPoint = function () {
 /*!**********************!*\
   !*** ./src/utils.js ***!
   \**********************/
-/*! exports provided: getRandomInteger */
+/*! exports provided: getRandomInteger, RenderPosition, renderElement, renderTemplate, createElement */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getRandomInteger", function() { return getRandomInteger; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RenderPosition", function() { return RenderPosition; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "renderElement", function() { return renderElement; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "renderTemplate", function() { return renderTemplate; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createElement", function() { return createElement; });
 const getRandomInteger = (a = 0, b = 1) => {
   const lower = Math.ceil(Math.min(a, b));
   const upper = Math.floor(Math.max(a, b));
 
   return Math.floor(lower + Math.random() * (upper - lower + 1));
+};
+
+const RenderPosition = {
+  AFTERBEGIN: 'afterbegin',
+  BEFOREEND: 'beforeend',
+};
+
+const renderElement = (container, element, place) => {
+  switch (place) {
+    case RenderPosition.AFTERBEGIN:
+      container.prepend(element);
+      break;
+    case RenderPosition.BEFOREEND:
+      container.append(element);
+      break;
+  }
+};
+
+const renderTemplate = (container, template, place) => {
+  container.insertAdjacentHTML(place, template);
+};
+
+const createElement = (template) => {
+  const newElement = document.createElement('div');
+  newElement.innerHTML = template;
+
+  return newElement.firstChild;
 };
 
 
