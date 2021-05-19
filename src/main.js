@@ -5,16 +5,16 @@ import RouteView from './view/header-trip-route.js';
 import TripInfoView from './view/header-trip-info.js';
 import PriceView from './view/header-trip-price.js';
 import TripsListView from './view/trips-list.js';
-import {createForm} from './view/form-create.js';
+import FormCreateView from './view/form-create.js';
 import FormEditView from './view/form-edit.js';
-import {createRouteItem} from './view/route-item.js';
-import {createPoint, pointName} from './mock/point.js';
+import RouteItemView from './view/route-item.js';
+import {createPoint, pointNames} from './mock/point.js';
 import {renderElement, RenderPosition} from './utils.js';
 
 const ITEMS_COUNT = 17;
 
 const items = new Array(ITEMS_COUNT).fill().map(createPoint);
-
+const pointModel = createPoint();
 
 const siteMainElement = document.querySelector('.page-main');
 const siteHeaderElement = document.querySelector('.page-header');
@@ -34,9 +34,9 @@ renderElement(siteListElement, new SortView().getElement(), RenderPosition.AFTER
 
 const tripsListViewComponent = new TripsListView();
 renderElement(siteListElement, tripsListViewComponent.getElement(), RenderPosition.BEFOREEND);
-renderElement(tripsListViewComponent.getElement(), createForm(), RenderPosition.AFTERBEGIN);
-renderElement(tripsListViewComponent.getElement(), createFormEdit(items[0]), RenderPosition.AFTERBEGIN);
+renderElement(tripsListViewComponent.getElement(), new FormCreateView().getElement(), RenderPosition.AFTERBEGIN);
+renderElement(tripsListViewComponent.getElement(), new FormEditView(createPoint(), pointNames).getElement(), RenderPosition.AFTERBEGIN);
 
 for (let i = 1; i < ITEMS_COUNT; i++) {
-  renderElement(tripsListViewComponent.getElement(), createRouteItem(items[i]), RenderPosition.BEFOREEND);
+  renderElement(tripsListViewComponent.getElement(), new RouteItemView(items[i]).getElement(), RenderPosition.BEFOREEND);
 }

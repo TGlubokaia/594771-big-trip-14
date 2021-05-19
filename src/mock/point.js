@@ -14,7 +14,7 @@ const pointType = [
   'sightseeing',
   'restaurant'];
 
-export const pointName = ['Paris', 'New-York', 'London', 'Thorshavn', 'Santiago'];
+export const pointNames = ['Paris', 'New-York', 'London', 'Thorshavn', 'Santiago'];
 
 
 const optionTaxi = {
@@ -81,7 +81,7 @@ export const createPoint = function () {
   return {
     type: pointType[getRandomInteger(0, pointType.length-1)],
     offers: offers[getRandomInteger(0, offers.length-1)]['offers'],
-    point: pointName[getRandomInteger(0, pointName.length-1)],
+    point: pointNames[getRandomInteger(0, pointNames.length-1)],
     description: description.slice(0, getRandomInteger(1, description.length)).join('. ') + '.',
     photos: photosArr(),
     date: dayjs(dateFormat).format('MMM DD').toUpperCase(),

@@ -1,4 +1,6 @@
-export const createForm =  function () {
+import {createElement} from '../utils.js';
+
+const createFormCreateTemplate =  function () {
 
   return `<li class="trip-events__item">
   <form class="event event--edit" action="#" method="post">
@@ -106,3 +108,26 @@ export const createForm =  function () {
   </form>
 </li>`;
 };
+
+
+export default class FormCreate {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFormCreateTemplate();
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

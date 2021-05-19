@@ -1,8 +1,8 @@
 import {createElement} from '../utils.js';
 import dayjs from 'dayjs';
 
-const createFormEditTemplate =  function (point, pointName) {
-  const {type, point, offers, description, dateFormat, startTime, endTime, price, photos} = point;
+const createFormEditTemplate =  function (pointModel, pointNames) {
+  const {type, point, offers, description, dateFormat, startTime, endTime, price, photos} = pointModel;
 
   const createOffers = function() {
     let offersList = '';
@@ -21,8 +21,8 @@ const createFormEditTemplate =  function (point, pointName) {
 
   const createOption = function() {
     let options = '';
-    for (const point of pointName) {
-      options += `<option value="${point}"></option>`;
+    for (const name of pointNames) {
+      options += `<option value="${name}"></option>`;
     }
     return options;
   };
