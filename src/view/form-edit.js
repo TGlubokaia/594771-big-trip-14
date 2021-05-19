@@ -1,8 +1,8 @@
-import {createPoint, pointName} from '../mock/point.js';
+import {createElement} from '../utils.js';
 import dayjs from 'dayjs';
 
-export const createFormEdit =  function () {
-  const {type, point, offers, description, dateFormat, startTime, endTime, price, photos} = createPoint();
+const createFormEditTemplate =  function (point, pointName) {
+  const {type, point, offers, description, dateFormat, startTime, endTime, price, photos} = point;
 
   const createOffers = function() {
     let offersList = '';
@@ -156,3 +156,28 @@ export const createFormEdit =  function () {
   </form>
 </li>`;
 };
+
+
+export default class FormEdit {
+  constructor(point, pointName) {
+    this._element = null;
+    this._point = point;
+    this._pointName = pointName;
+  }
+
+  getTemplate() {
+    return createFormEditTemplate(this._point, this._pointName);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
