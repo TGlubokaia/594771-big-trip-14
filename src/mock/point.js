@@ -14,8 +14,6 @@ const pointType = [
   'sightseeing',
   'restaurant'];
 
-export const pointNames = ['Paris', 'New-York', 'London', 'Thorshavn', 'Santiago'];
-
 
 const optionTaxi = {
   'type': 'taxi',
@@ -70,26 +68,76 @@ const photosArr = function() {
   return photos;
 };
 
-const startTime = ['11:30', '12:00', '13:00'];
-const endTime = ['13:30', '14:15', '15:40'];
+const images = photosArr();
+
+const createGallery = function () {
+  let gallery = '';
+  for (const photo of images) {
+    gallery += `<img class="event__photo" src="${photo}" alt="Event photo">`;
+  }
+  return gallery;
+};
+
+export const cities = [
+  {
+    name: 'Paris',
+    img: createGallery(),
+  },
+  {
+    name: 'New-York',
+    img: createGallery(),
+  },
+  {
+    name: 'London',
+    img: createGallery(),
+  },
+  {
+    name: 'Thorshavn',
+    img: createGallery(),
+  },
+];
+
+export const citiesNames = cities.map((city) => city.name);
+
+// const formatDifference = function () {
+//   const hourDayjs = ;
+//   const dayDayjs = ;
+
+//   let time = '';
+//   if (end.diff(start) > )
+//   end.diff(start, time),
+// }
 
 export const createPoint = function () {
-  const dateFormat = '2021-05-28';
-  const start = dayjs(dateFormat + 'T' + startTime[getRandomInteger(0, startTime.length-1)]);
-  const end = dayjs(dateFormat + 'T' + endTime[getRandomInteger(0, endTime.length-1)]);
+  const dateFormat = function () {
+    const minutes = getRandomInteger(0, 59);
+    const hours = getRandomInteger(0, 23);
+    const year = 2021;
+    const month = getRandomInteger(1, 12);
+    const day = getRandomInteger(1, 28);
+    const itemDate = String(year + '-' + month + '-' + day + 'T' + hours + ':' + minutes + ':00');
+    return itemDate;
+  };
+  const start = dayjs(dateFormat());
+  const end = dayjs(dateFormat());
+  const pointDate = dateFormat();
+  // const duration = function() {
+  //
+  // }
 
   return {
     type: pointType[getRandomInteger(0, pointType.length-1)],
     offers: offers[getRandomInteger(0, offers.length-1)]['offers'],
-    point: pointNames[getRandomInteger(0, pointNames.length-1)],
+    point: cities[getRandomInteger(0, citiesNames.length-1)].name,
     description: description.slice(0, getRandomInteger(1, description.length)).join('. ') + '.',
-    photos: photosArr(),
-    date: dayjs(dateFormat).format('MMM DD').toUpperCase(),
+    photos: cities[getRandomInteger(0, citiesNames.length-1)].img,
+    date: dayjs(dateFormat()).format('MMM DD').toUpperCase(),
     price: getRandomInteger(10, 150),
     startTime: dayjs(start).format('HH:mm'),
     endTime: dayjs(end).format('HH:mm'),
-    duration: end.diff(start, 'minute'),
-    dateFormat,
+    duration: end.diff(start),
+    pointDate,
+    isBefore: dayjs(dateFormat()).isBefore(dayjs()),
   };
 };
 

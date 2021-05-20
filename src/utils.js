@@ -10,7 +10,7 @@ export const RenderPosition = {
   BEFOREEND: 'beforeend',
 };
 
-export const renderElement = (container, element, place) => {
+export const render = (container, element, place) => {
   switch (place) {
     case RenderPosition.AFTERBEGIN:
       container.prepend(element);
@@ -30,4 +30,12 @@ export const createElement = (template) => {
   newElement.innerHTML = template;
 
   return newElement.firstChild;
+};
+
+export const createOption = function(citiesNames) {
+  let options = '';
+  for (const city of citiesNames) {
+    options += `<option value="${city}"></option>`;
+  }
+  return options;
 };

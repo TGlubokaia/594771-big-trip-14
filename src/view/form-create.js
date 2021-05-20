@@ -1,6 +1,6 @@
-import {createElement} from '../utils.js';
+import {createElement, createOption} from '../utils.js';
 
-const createFormCreateTemplate =  function () {
+const createFormCreateTemplate =  function (cities) {
 
   return `<li class="trip-events__item">
   <form class="event event--edit" action="#" method="post">
@@ -75,9 +75,7 @@ const createFormCreateTemplate =  function () {
         </label>
         <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="" list="destination-list-1">
         <datalist id="destination-list-1">
-          <option value="Amsterdam"></option>
-          <option value="Geneva"></option>
-          <option value="Chamonix"></option>
+          ${createOption(cities)}
         </datalist>
       </div>
 
@@ -111,12 +109,13 @@ const createFormCreateTemplate =  function () {
 
 
 export default class FormCreate {
-  constructor() {
+  constructor(point) {
     this._element = null;
+    this._point = point;
   }
 
   getTemplate() {
-    return createFormCreateTemplate();
+    return createFormCreateTemplate(this._point);
   }
 
   getElement() {

@@ -1,7 +1,7 @@
-import {createElement} from '../utils.js';
+import {createElement, createOption} from '../utils.js';
 import dayjs from 'dayjs';
 
-const createFormEditTemplate =  function (pointModel, pointNames) {
+const createFormEditTemplate =  function (pointModel, cities) {
   const {type, point, offers, description, dateFormat, startTime, endTime, price, photos} = pointModel;
 
   const createOffers = function() {
@@ -17,22 +17,6 @@ const createFormEditTemplate =  function (pointModel, pointNames) {
     </div>`;
     }
     return offersList;
-  };
-
-  const createOption = function() {
-    let options = '';
-    for (const name of pointNames) {
-      options += `<option value="${name}"></option>`;
-    }
-    return options;
-  };
-
-  const createGallery = function () {
-    let images = '';
-    for (const photo of photos) {
-      images += `<img class="event__photo" src="${photo}" alt="Event photo">`;
-    }
-    return images;
   };
 
   return `<li class="trip-events__item">
@@ -108,7 +92,7 @@ const createFormEditTemplate =  function (pointModel, pointNames) {
         </label>
         <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${point}" list="destination-list-1">
         <datalist id="destination-list-1">
-        ${createOption}
+          ${createOption(cities)}
         </datalist>
       </div>
 
@@ -148,7 +132,7 @@ const createFormEditTemplate =  function (pointModel, pointNames) {
         <p class="event__destination-description">${description}</p>
         <div class="event__photos-container">
           <div class="event__photos-tape">
-          ${createGallery()}
+          ${photos}
           </div>
           </div>
       </section>

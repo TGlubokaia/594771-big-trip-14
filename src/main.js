@@ -8,13 +8,12 @@ import TripsListView from './view/trips-list.js';
 import FormCreateView from './view/form-create.js';
 import FormEditView from './view/form-edit.js';
 import RouteItemView from './view/route-item.js';
-import {createPoint, pointNames} from './mock/point.js';
-import {renderElement, RenderPosition} from './utils.js';
+import {createPoint, citiesNames} from './mock/point.js';
+import {render, RenderPosition} from './utils.js';
 
 const ITEMS_COUNT = 17;
 
 const items = new Array(ITEMS_COUNT).fill().map(createPoint);
-const pointModel = createPoint();
 
 const siteMainElement = document.querySelector('.page-main');
 const siteHeaderElement = document.querySelector('.page-header');
@@ -23,20 +22,43 @@ const siteMenuElement = siteHeaderElement.querySelector('.trip-controls__navigat
 const siteFiltersElement = siteHeaderElement.querySelector('.trip-controls__filters');
 const siteListElement = siteMainElement.querySelector('.trip-events');
 
-renderElement(siteHeaderTripMain, new TripInfoView().getElement(), RenderPosition.AFTERBEGIN);
+const renderRouteItem = (listElement, item, cities) => {
+  const routeItemViewComponent = new RouteItemView(item);
+  const FormEditViewComponent = new FormEditView(item, cities);
+
+  const replaceCardToForm = () => {
+    listElement.replaceChild(FormEditViewComponent.getElement(), routeItemViewComponent.getElement());
+  };
+
+  const replaceFormToCard = () => {
+    listElement.replaceChild(routeItemViewComponent.getElement(), FormEditViewComponent.getElement());
+  };
+
+  routeItemViewComponent.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
+    replaceCardToForm();
+  });
+
+  FormEditViewComponent.getElement().querySelector('form').addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    replaceFormToCard();
+  });
+  render(listElement, routeItemViewComponent.getElement(), RenderPosition.BEFOREEND);
+};
+
+render(siteHeaderTripMain, new TripInfoView().getElement(), RenderPosition.AFTERBEGIN);
 
 const siteHeaderTripInfo = siteHeaderElement.querySelector('.trip-info');
-renderElement(siteHeaderTripInfo, new RouteView().getElement(), RenderPosition.AFTERBEGIN);
-renderElement(siteHeaderTripInfo, new PriceView().getElement(), RenderPosition.BEFOREEND);
-renderElement(siteMenuElement, new SiteMenuView().getElement(), RenderPosition.BEFOREEND);
-renderElement(siteFiltersElement, new FiltersView().getElement(), RenderPosition.BEFOREEND);
-renderElement(siteListElement, new SortView().getElement(), RenderPosition.AFTERBEGIN);
+render(siteHeaderTripInfo, new RouteView().getElement(), RenderPosition.AFTERBEGIN);
+render(siteHeaderTripInfo, new PriceView().getElement(), RenderPosition.BEFOREEND);
+render(siteMenuElement, new SiteMenuView().getElement(), RenderPosition.BEFOREEND);
+render(siteFiltersElement, new FiltersView().getElement(), RenderPosition.BEFOREEND);
+render(siteListElement, new SortView().getElement(), RenderPosition.AFTERBEGIN);
 
 const tripsListViewComponent = new TripsListView();
-renderElement(siteListElement, tripsListViewComponent.getElement(), RenderPosition.BEFOREEND);
-renderElement(tripsListViewComponent.getElement(), new FormCreateView().getElement(), RenderPosition.AFTERBEGIN);
-renderElement(tripsListViewComponent.getElement(), new FormEditView(createPoint(), pointNames).getElement(), RenderPosition.AFTERBEGIN);
+render(siteListElement, tripsListViewComponent.getElement(), RenderPosition.BEFOREEND);
+render(tripsListViewComponent.getElement(), new FormCreateView(citiesNames).getElement(), RenderPosition.AFTERBEGIN);
 
-for (let i = 1; i < ITEMS_COUNT; i++) {
-  renderElement(tripsListViewComponent.getElement(), new RouteItemView(items[i]).getElement(), RenderPosition.BEFOREEND);
+
+for (let i = 0; i < ITEMS_COUNT; i++) {
+  renderRouteItem(tripsListViewComponent.getElement(), items[i], citiesNames);
 }
