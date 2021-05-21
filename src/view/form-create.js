@@ -1,4 +1,6 @@
-export const createForm =  function () {
+import {createElement, createOption} from '../utils.js';
+
+const createFormCreateTemplate =  function (cities) {
 
   return `<li class="trip-events__item">
   <form class="event event--edit" action="#" method="post">
@@ -73,9 +75,7 @@ export const createForm =  function () {
         </label>
         <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="" list="destination-list-1">
         <datalist id="destination-list-1">
-          <option value="Amsterdam"></option>
-          <option value="Geneva"></option>
-          <option value="Chamonix"></option>
+          ${createOption(cities)}
         </datalist>
       </div>
 
@@ -106,3 +106,27 @@ export const createForm =  function () {
   </form>
 </li>`;
 };
+
+
+export default class FormCreate {
+  constructor(point) {
+    this._element = null;
+    this._point = point;
+  }
+
+  getTemplate() {
+    return createFormCreateTemplate(this._point);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

@@ -1,4 +1,6 @@
-export const createRouteItem =  function (item) {
+import {createElement} from '../utils.js';
+
+const createRouteItemTemplate =  function (item) {
   const {type, offers, point, startTime, endTime, duration, date, price} = item;
 
   const createOffers = function() {
@@ -47,3 +49,26 @@ export const createRouteItem =  function (item) {
   </div>
  </li>`;
 };
+
+export default class RouteItem {
+  constructor(item) {
+    this._element = null;
+    this._item = item;
+  }
+
+  getTemplate() {
+    return createRouteItemTemplate(this._item);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

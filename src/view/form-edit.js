@@ -1,8 +1,8 @@
-import {createPoint, pointName} from '../mock/point.js';
+import {createElement, createOption} from '../utils.js';
 import dayjs from 'dayjs';
 
-export const createFormEdit =  function () {
-  const {type, point, offers, description, dateFormat, startTime, endTime, price, photos} = createPoint();
+const createFormEditTemplate =  function (pointModel, cities) {
+  const {type, point, offers, description, dateFormat, startTime, endTime, price, photos} = pointModel;
 
   const createOffers = function() {
     let offersList = '';
@@ -17,22 +17,6 @@ export const createFormEdit =  function () {
     </div>`;
     }
     return offersList;
-  };
-
-  const createOption = function() {
-    let options = '';
-    for (const point of pointName) {
-      options += `<option value="${point}"></option>`;
-    }
-    return options;
-  };
-
-  const createGallery = function () {
-    let images = '';
-    for (const photo of photos) {
-      images += `<img class="event__photo" src="${photo}" alt="Event photo">`;
-    }
-    return images;
   };
 
   return `<li class="trip-events__item">
@@ -108,7 +92,7 @@ export const createFormEdit =  function () {
         </label>
         <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${point}" list="destination-list-1">
         <datalist id="destination-list-1">
-        ${createOption}
+          ${createOption(cities)}
         </datalist>
       </div>
 
@@ -148,7 +132,7 @@ export const createFormEdit =  function () {
         <p class="event__destination-description">${description}</p>
         <div class="event__photos-container">
           <div class="event__photos-tape">
-          ${createGallery()}
+          ${photos}
           </div>
           </div>
       </section>
@@ -156,3 +140,28 @@ export const createFormEdit =  function () {
   </form>
 </li>`;
 };
+
+
+export default class FormEdit {
+  constructor(point, pointName) {
+    this._element = null;
+    this._point = point;
+    this._pointName = pointName;
+  }
+
+  getTemplate() {
+    return createFormEditTemplate(this._point, this._pointName);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
