@@ -31,6 +31,7 @@ const renderRouteItem = (listElement, item, cities) => {
     listElement.replaceChild(FormEditViewComponent.getElement(), routeItemViewComponent.getElement());
     document.addEventListener('keydown', onEscKeyDown); // <- корректно?
   };
+
   const replaceFormToCard = () => {
     listElement.replaceChild(routeItemViewComponent.getElement(), FormEditViewComponent.getElement());
     document.removeEventListener('keydown', onEscKeyDown); // <- корректно?
@@ -52,6 +53,10 @@ const renderRouteItem = (listElement, item, cities) => {
     evt.preventDefault();
     replaceFormToCard();
     // document.removeEventListener('keydown', onEscKeyDown);
+  });
+
+  FormEditViewComponent.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
+    replaceFormToCard();
   });
 
   render(listElement, routeItemViewComponent.getElement(), RenderPosition.BEFOREEND);
