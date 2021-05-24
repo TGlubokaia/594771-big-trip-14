@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import {getRandomInteger} from '../utils.js';
+import {getRandomInteger} from '../utils/common.js';
 import dayjs from 'dayjs';
 
 const pointType = [
@@ -140,4 +140,3 @@ export const createPoint = function () {
     isBefore: dayjs(dateFormat()).isBefore(dayjs()),
   };
 };
-

@@ -1,4 +1,4 @@
-import {createElement} from '../utils.js';
+import AbstractView from './abstract.js';
 
 const createRouteItemTemplate =  function (item) {
   const {type, offers, point, startTime, endTime, duration, date, price} = item;
@@ -50,25 +50,24 @@ const createRouteItemTemplate =  function (item) {
  </li>`;
 };
 
-export default class RouteItem {
+export default class RouteItem extends AbstractView {
   constructor(item) {
-    this._element = null;
+    super();
     this._item = item;
-  }
 
+    this._editClickHandler = this._editClickHandler.bind(this);
+  }
   getTemplate() {
     return createRouteItemTemplate(this._item);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
+  _editClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.editClick();
   }
 
-  removeElement() {
-    this._element = null;
+  setEditClickHandler(callback) {
+    this._callback.editClick = callback;
+    this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._editClickHandler);
   }
 }

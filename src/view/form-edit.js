@@ -1,5 +1,6 @@
-import {createElement, createOption} from '../utils.js';
+import {createOption} from '../utils/route.js';
 import dayjs from 'dayjs';
+import AbstractView from './abstract.js';
 
 const createFormEditTemplate =  function (pointModel, cities) {
   const {type, point, offers, description, dateFormat, startTime, endTime, price, photos} = pointModel;
@@ -141,27 +142,38 @@ const createFormEditTemplate =  function (pointModel, cities) {
 </li>`;
 };
 
-
-export default class FormEdit {
+export default class FormEdit extends AbstractView {
   constructor(point, pointName) {
-    this._element = null;
+    super();
     this._point = point;
     this._pointName = pointName;
+
+    this._formSubmitHandler = this._formSubmitHandler.bind(this);
+    this._formHideClickHandler = this._formHideClickHandler.bind(this);
   }
 
   getTemplate() {
     return createFormEditTemplate(this._point, this._pointName);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
+  _formSubmitHandler(evt) {
+    evt.preventDefault();
+    this._callback.formSubmit();
   }
 
-  removeElement() {
-    this._element = null;
+  _formHideClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.formHide();
+  }
+
+  setFormSubmitHandler(callback) {
+    this._callback.formSubmit = callback;
+    this.getElement().querySelector('form').addEventListener('submit', this._formSubmitHandler);
+  }
+
+  setFormHideClickHandler(callback) {
+    this._callback.formHide = callback;
+    this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._formHideClickHandler);
   }
 }
+
