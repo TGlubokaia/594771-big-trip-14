@@ -1,4 +1,5 @@
-import {createElement, createOption} from '../utils.js';
+import {createOption} from '../utils/route.js';
+import AbstractView from './abstract.js';
 
 const createFormCreateTemplate =  function (cities) {
 
@@ -107,26 +108,12 @@ const createFormCreateTemplate =  function (cities) {
 </li>`;
 };
 
-
-export default class FormCreate {
+export default class FormCreate extends AbstractView {
   constructor(point) {
-    this._element = null;
+    super();
     this._point = point;
   }
-
   getTemplate() {
     return createFormCreateTemplate(this._point);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

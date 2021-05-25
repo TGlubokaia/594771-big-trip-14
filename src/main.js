@@ -10,7 +10,7 @@ import FormEditView from './view/form-edit.js';
 import RouteItemView from './view/route-item.js';
 import NoRouteItemsView from './view/no-route-items.js';
 import {createPoint, citiesNames} from './mock/point.js';
-import {render, RenderPosition} from './utils.js';
+import {render, RenderPosition, replace} from './utils/render';
 
 const ITEMS_COUNT = 17;
 
@@ -25,15 +25,15 @@ const siteListElement = siteMainElement.querySelector('.trip-events');
 
 const renderRouteItem = (listElement, item, cities) => {
   const routeItemViewComponent = new RouteItemView(item);
-  const FormEditViewComponent = new FormEditView(item, cities);
+  const formEditViewComponent = new FormEditView(item, cities);
 
   const replaceCardToForm = () => {
-    listElement.replaceChild(FormEditViewComponent.getElement(), routeItemViewComponent.getElement());
+    replace(formEditViewComponent, routeItemViewComponent);
     document.addEventListener('keydown', onEscKeyDown); // <- корректно?
   };
 
   const replaceFormToCard = () => {
-    listElement.replaceChild(routeItemViewComponent.getElement(), FormEditViewComponent.getElement());
+    replace(routeItemViewComponent, formEditViewComponent);
     document.removeEventListener('keydown', onEscKeyDown); // <- корректно?
   };
 
@@ -44,40 +44,39 @@ const renderRouteItem = (listElement, item, cities) => {
       document.removeEventListener('keydown', onEscKeyDown);
     }
   };
-  routeItemViewComponent.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
+  routeItemViewComponent.setEditClickHandler(() => {
     replaceCardToForm();
     // document.addEventListener('keydown', onEscKeyDown);
   });
 
-  FormEditViewComponent.getElement().querySelector('form').addEventListener('submit', (evt) => {
-    evt.preventDefault();
+  formEditViewComponent.setFormSubmitHandler(() => {
     replaceFormToCard();
     // document.removeEventListener('keydown', onEscKeyDown);
   });
 
-  FormEditViewComponent.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
+  formEditViewComponent.setFormHideClickHandler(() => {
     replaceFormToCard();
   });
 
-  render(listElement, routeItemViewComponent.getElement(), RenderPosition.BEFOREEND);
+  render(listElement, routeItemViewComponent, RenderPosition.BEFOREEND);
 };
 
-render(siteHeaderTripMain, new TripInfoView().getElement(), RenderPosition.AFTERBEGIN);
+render(siteHeaderTripMain, new TripInfoView(), RenderPosition.AFTERBEGIN);
 
 const siteHeaderTripInfo = siteHeaderElement.querySelector('.trip-info');
-render(siteHeaderTripInfo, new RouteView().getElement(), RenderPosition.AFTERBEGIN);
-render(siteHeaderTripInfo, new PriceView().getElement(), RenderPosition.BEFOREEND);
-render(siteMenuElement, new SiteMenuView().getElement(), RenderPosition.BEFOREEND);
-render(siteFiltersElement, new FiltersView().getElement(), RenderPosition.BEFOREEND);
+render(siteHeaderTripInfo, new RouteView(), RenderPosition.AFTERBEGIN);
+render(siteHeaderTripInfo, new PriceView(), RenderPosition.BEFOREEND);
+render(siteMenuElement, new SiteMenuView(), RenderPosition.BEFOREEND);
+render(siteFiltersElement, new FiltersView(), RenderPosition.BEFOREEND);
 
 if (items.length === 0) {
-  render(siteListElement, new NoRouteItemsView().getElement(), RenderPosition.BEFOREEND);
+  render(siteListElement, new NoRouteItemsView(), RenderPosition.BEFOREEND);
 } else {
-  render(siteListElement, new SortView().getElement(), RenderPosition.AFTERBEGIN);
+  render(siteListElement, new SortView(), RenderPosition.AFTERBEGIN);
 
   const tripsListViewComponent = new TripsListView();
-  render(siteListElement, tripsListViewComponent.getElement(), RenderPosition.BEFOREEND);
-  render(tripsListViewComponent.getElement(), new FormCreateView(citiesNames).getElement(), RenderPosition.AFTERBEGIN);
+  render(siteListElement, tripsListViewComponent, RenderPosition.BEFOREEND);
+  render(tripsListViewComponent, new FormCreateView(citiesNames), RenderPosition.AFTERBEGIN);
 
   for (let i = 0; i < ITEMS_COUNT; i++) {
     renderRouteItem(tripsListViewComponent.getElement(), items[i], citiesNames);

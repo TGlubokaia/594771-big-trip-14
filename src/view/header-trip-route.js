@@ -1,4 +1,4 @@
-import {createElement} from '../utils.js';
+import AbstractView from './abstract.js';
 
 const createRouteTemplate =  function () {
   return `<div class="trip-info__main">
@@ -8,24 +8,8 @@ const createRouteTemplate =  function () {
   </div>`;
 };
 
-export default class Route {
-  constructor() {
-    this._element = null;
-  }
-
+export default class Route extends AbstractView {
   getTemplate() {
     return createRouteTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
