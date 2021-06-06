@@ -68,15 +68,18 @@ const photosArr = function() {
   return photos;
 };
 
-const images = photosArr();
+
 
 const createGallery = function () {
+  const images = photosArr();
   let gallery = '';
   for (const photo of images) {
     gallery += `<img class="event__photo" src="${photo}" alt="Event photo">`;
   }
   return gallery;
 };
+
+
 
 export const cities = [
   {

@@ -6,7 +6,7 @@ const createPriceTemplate =  function () {
 </p>`;
 };
 
-export default class Price extends AbstractView {
+export default class TripInfoPrice extends AbstractView {
   getTemplate() {
     return createPriceTemplate();
   }

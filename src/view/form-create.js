@@ -1,4 +1,4 @@
-import {createOption} from '../utils/route.js';
+import {createOption} from '../utils/trip.js';
 import AbstractView from './abstract.js';
 
 const createFormCreateTemplate =  function (cities) {

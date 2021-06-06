@@ -1,6 +1,6 @@
 import AbstractView from './abstract.js';
 
-const createRouteItemTemplate =  function (item) {
+const createTripItemTemplate =  function (item) {
   const {type, offers, point, startTime, endTime, duration, date, price} = item;
 
   const createOffers = function() {
@@ -50,7 +50,7 @@ const createRouteItemTemplate =  function (item) {
  </li>`;
 };
 
-export default class RouteItem extends AbstractView {
+export default class TripItem extends AbstractView {
   constructor(item) {
     super();
     this._item = item;
@@ -58,7 +58,7 @@ export default class RouteItem extends AbstractView {
     this._editClickHandler = this._editClickHandler.bind(this);
   }
   getTemplate() {
-    return createRouteItemTemplate(this._item);
+    return createTripItemTemplate(this._item);
   }
 
   _editClickHandler(evt) {

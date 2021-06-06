@@ -1,4 +1,4 @@
-import {createOption} from '../utils/route.js';
+import {createOption} from '../utils/trip.js';
 import dayjs from 'dayjs';
 import AbstractView from './abstract.js';
 
