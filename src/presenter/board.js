@@ -6,6 +6,8 @@ import {citiesNames} from '../mock/point.js';
 import {render, RenderPosition} from '../utils/render.js';
 import {updateItem} from '../utils/common.js';
 import ItemPresenter from './trip-item.js'
+import {SortType} from '../utils/common.js'
+import {sortPrice, sortTime} from '../utils/trip.js'
 
 
 export default class Board {
@@ -17,25 +19,56 @@ export default class Board {
     this._formCreateViewComponent = new FormCreateView(citiesNames);
     this._noTripItemsViewComponent = new NoTripItemsView();
     this._allItemPresenters = {};
+    this._currentSortType = SortType.DEFAULT;
 
     this._handleItemChange = this._handleItemChange.bind(this);
     this._handleModeChange = this._handleModeChange.bind(this);
+    this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
   }
 
   init(boardItems) {
     // Метод для инициализации (начала работы) модуля,
     this._boardItems = boardItems.slice();
+    this._sourcedItems = boardItems.slice();
     this._renderBoard();
   }
 
   _handleItemChange(updatedItem) {
     this._boardItems = updateItem(this._boardItems, updatedItem);
+    this._sourcedItems = updateItem(this._sourcedItems, updatedItem);
     this._allItemPresenters[updatedItem.id].init(updatedItem);
   }
 
+  _sortItems(sortType) {
+    switch (sortType) {
+      case SortType.TIME:
+        this._boardItems.sort(sortTime);
+        break;
+      case SortType.PRICE:
+        this._boardItems.sort(sortPrice);
+        break;
+      case SortType.DISABLED:
+        break;
+      default:
+        this._boardItems = this._sourcedItems.slice();
+    }
+
+    this._currentSortType = sortType;
+  }
+
+  _handleSortTypeChange(sortType) {
+    if (this._currentSortType === sortType) {
+      return;
+    }
+
+    this._sortItems(sortType);
+    this._clearItemsList();
+    this._renderItemsList();
+  }
 
   _renderSort() {
     render(this._boardContainer, this._sortViewComponent, RenderPosition.AFTERBEGIN);
+    this._sortViewComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
   }
 
   _renderListContainer() {
@@ -52,7 +85,7 @@ export default class Board {
   _renderItems() {
     // Метод для рендеринга N-задач
     this._boardItems
-    .forEach((boardItem) => this._renderItem(boardItem, citiesNames));
+      .forEach((boardItem) => this._renderItem(boardItem, citiesNames));
   }
 
   _renderNoItems() {

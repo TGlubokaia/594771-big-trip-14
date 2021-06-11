@@ -18,3 +18,10 @@ export const updateItem = (items, update) => {
     ...items.slice(index + 1),
   ];
 };
+
+export const SortType = {
+  DEFAULT: 'default',
+  TIME: 'time',
+  PRICE: 'price',
+  DISABLED: 'disabled'
+};
