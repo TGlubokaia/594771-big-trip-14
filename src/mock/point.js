@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import {getRandomInteger} from '../utils/common.js';
 import dayjs from 'dayjs';
+import {nanoid} from 'nanoid';
 
 const pointType = [
   'taxi',
@@ -129,6 +130,7 @@ export const createPoint = function () {
   // }
 
   return {
+    id: nanoid(),
     type: pointType[getRandomInteger(0, pointType.length-1)],
     offers: offers[getRandomInteger(0, offers.length-1)]['offers'],
     point: cities[getRandomInteger(0, citiesNames.length-1)].name,
@@ -141,5 +143,6 @@ export const createPoint = function () {
     duration: end.diff(start),
     pointDate,
     isBefore: dayjs(dateFormat()).isBefore(dayjs()),
+    isFavorite: false,
   };
 };

@@ -1,6 +1,7 @@
 import {createOption} from '../utils/trip.js';
 import dayjs from 'dayjs';
 import AbstractView from './abstract.js';
+import {citiesNames} from '../mock/point.js'
 
 const createFormEditTemplate =  function (pointModel, cities) {
   const {type, point, offers, description, dateFormat, startTime, endTime, price, photos} = pointModel;
@@ -143,22 +144,21 @@ const createFormEditTemplate =  function (pointModel, cities) {
 };
 
 export default class FormEdit extends AbstractView {
-  constructor(point, pointName) {
+  constructor(item) {
     super();
-    this._point = point;
-    this._pointName = pointName;
+    this._item = item;
 
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._formHideClickHandler = this._formHideClickHandler.bind(this);
   }
 
   getTemplate() {
-    return createFormEditTemplate(this._point, this._pointName);
+    return createFormEditTemplate(this._item, citiesNames);
   }
 
   _formSubmitHandler(evt) {
     evt.preventDefault();
-    this._callback.formSubmit();
+    this._callback.formSubmit(this._item);
   }
 
   _formHideClickHandler(evt) {
