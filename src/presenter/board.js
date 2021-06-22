@@ -5,14 +5,16 @@ import NoTripItemsView from '../view/no-trip-items.js';
 import {citiesNames} from '../mock/point.js';
 import {render, RenderPosition} from '../utils/render.js';
 import {updateItem} from '../utils/common.js';
-import ItemPresenter from './trip-item.js'
-import {SortType} from '../utils/common.js'
-import {sortPrice, sortTime} from '../utils/trip.js'
+import ItemPresenter from './trip-item.js';
+import TripInfoPresenter from './trip-info.js';
+import {SortType} from '../utils/common.js';
+import {sortPrice, sortTime} from '../utils/trip.js';
 
 
 export default class Board {
-  constructor(boardContainer) {
+  constructor(boardContainer, tripInfoContainer) {
     this._boardContainer = boardContainer;
+    this._tripInfoContainer = tripInfoContainer;
 
     this._sortViewComponent = new SortView();
     this._tripsListViewComponent = new TripsListView();
@@ -103,11 +105,16 @@ export default class Board {
     this._renderItems();
 
   }
+  _renderTripInfo() {
+    this._tripInfoPresenter = new TripInfoPresenter(this._tripInfoContainer);
+    this._tripInfoPresenter.init();
+  }
 
   _renderBoard() {
     if (this._boardItems.length === 0) {
       render(this._boardContainer, this._noTripItemsViewComponent, RenderPosition.BEFOREEND);
     } else {
+      this._renderTripInfo();
       this._renderSort();
       this._renderListContainer();
 
